@@ -8,7 +8,7 @@
       </div></el-col>
   <el-col :span="19" class="middle">
       <h2>电商后台管理系统</h2></el-col>
-  <el-col :span="1" class="loginout"><a href="#">退出</a></el-col>
+  <el-col :span="1" class="loginout"><a @click="handleLoginout()" href="#">退出</a></el-col>
 </el-row>
   </el-header>
   <el-container>
@@ -64,7 +64,22 @@
 
 <script>
 export default {
-
+  beforeCreate () {
+    if (!localStorage.getItem('token')) {
+      this.$message.warning('请登陆后重试')
+      this.$router.push({
+        path: 'login'
+      })
+    }
+  },
+  methods: {
+    handleLoginout () {
+      localStorage.clear()
+      this.$router.push({
+        path: 'login'
+      })
+    }
+  }
 }
 </script>
 
