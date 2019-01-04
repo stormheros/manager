@@ -45,6 +45,7 @@
         <template slot-scope="scope">
           <el-switch
            v-model="scope.row.mg_state"
+           @change="changeState(scope.row)"
            active-color="#13ce66"
            inactive-color="#ff4949">
           </el-switch>
@@ -55,7 +56,7 @@
         <template slot-scope="scope">
             <el-button @click="showEdit(scope.row)" type="primary" size="mini" plain icon="el-icon-edit" circle></el-button>
             <el-button @click="delUser(scope.row)" type="danger"  size="mini" plain icon="el-icon-delete" circle></el-button>
-            <el-button type="success" size="mini" plain icon="el-icon-check" circle></el-button>
+            <el-button @click="showRole(scope.row)" type="success" size="mini" plain icon="el-icon-check" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -94,7 +95,7 @@
 
 <!-- 编辑页面 -->
     <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
-  <el-form :model="form">
+     <el-form :model="form">
     <el-form-item label="用户名" label-width="300">
       <el-input disabled v-model="form.username" autocomplete="off"></el-input>
     </el-form-item>
@@ -109,6 +110,24 @@
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
     <el-button type="primary" @click="editUser">确 定</el-button>
+  </div>
+</el-dialog>
+<!-- 分配角色 -->
+<el-dialog title="分配角色" :visible.sync="dialogFormVisibleRole">
+  <el-form>
+    <el-form-item label="用户名" label-width="200">{{currUsername}}
+    </el-form-item>
+    <el-form-item label="角色" label-width="200">
+      <el-select v-model="currRoleId">
+        <el-option label="请选择" :value="-1"></el-option>
+        <el-option v-for="(v,i) in roles" :key="i" :label="v.roleName" :value="v.id"></el-option>
+
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
+    <el-button type="primary" @click="changeRoles">确 定</el-button>
   </div>
 </el-dialog>
     </el-card>
@@ -197,6 +216,23 @@ export default {
       } else {
         this.$message.info(msg)
       }
+    },
+    async changeState (user) {
+      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+      console.log(res)
+    },
+    async showRole (user) {
+      this.dialogFormVisibleRole = true
+      const res = await this.$http.get(`roles`)
+      this.roles = res.data.data
+      this.currUsername = user.username
+      this.currUserId = user.id
+      const resU = await this.$http.get(`users/${user.id}`)
+      this.currRoleId = resU.data.data.rid
+    },
+    async changeRoles(){
+      const res = await this.$http.put(`users/${this.currUserId}/role`,{rid: this.currRoleId})
+      this.dialogFormVisibleRole = false
     }
   },
   created () {
@@ -211,8 +247,13 @@ export default {
       tableData: [],
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
+      dialogFormVisibleRole: false,
       currentPage: 2,
-      form: {}
+      form: {},
+      currRoleId: -1,
+      roles: [],
+      currUsername: '',
+      currUserId: ''
     }
   }
 }
