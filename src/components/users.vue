@@ -1,10 +1,6 @@
 <template>
     <el-card class="box-card">
- <el-breadcrumb separator-class="el-icon-arrow-right">
-  <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-  <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-  <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-</el-breadcrumb>
+      <my-bread level1="用户管理" level2="用户列表"></my-bread>
  <el-row>
 <el-input @blur="searchInfo" @clear="clean" placeholder="请输入内容" v-model="query" clearable class="input-with-select">
     <el-button @click="searchInfo" slot="append" icon="el-icon-search"></el-button>
@@ -146,8 +142,6 @@ export default {
       this.getDate()
     },
     async getDate () {
-      const AUTH_TOKEN = localStorage.getItem('token')
-      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
       const res = await this.$http.get(`users?query=${this.query}&pagesize=${this.pagesize}&pagenum=${this.pagenum}`)
       const {data: {total, users}, meta: {status, msg}} = res.data
       if (status === 200) {
@@ -230,8 +224,9 @@ export default {
       const resU = await this.$http.get(`users/${user.id}`)
       this.currRoleId = resU.data.data.rid
     },
-    async changeRoles(){
-      const res = await this.$http.put(`users/${this.currUserId}/role`,{rid: this.currRoleId})
+    async changeRoles () {
+      const res = await this.$http.put(`users/${this.currUserId}/role`, {rid: this.currRoleId})
+      console.log(res)
       this.dialogFormVisibleRole = false
     }
   },

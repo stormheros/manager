@@ -8,6 +8,8 @@ import '@/assets/base.css'
 import App from './App'
 import router from './router'
 import moment from 'moment'
+import MyBread from '@/components/cusBread.vue'
+Vue.component('my-bread', MyBread)
 Vue.use(Http)
 Vue.use(ElementUI)
 Vue.filter('fmdata', (v) => {
