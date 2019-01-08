@@ -6,6 +6,8 @@ import User from '@/components/users.vue'
 import Rights from '@/components/rights.vue'
 import Roles from '@/components/roles.vue'
 import { Message } from 'element-ui'
+import Goods from '@/components/goods.vue'
+import Goodsadd from '@/components/goodsadd.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -22,24 +24,30 @@ const router = new Router({
     }, {
       path: '/roles',
       component: Roles
-    }]
+    }, {
+      path: '/goods',
+      component: Goods
+    }, {
+      path: '/goodsadd',
+      component: Goodsadd
+    } ]
   }, {
     path: '/login',
     component: Login
   }
   ]
 })
-router.beforeEach( (to,from,next)=>{
-  if(to.path !== '/login'){
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login') {
     if (!localStorage.getItem('token')) {
       Message.warning('请登陆后重试')
       router.push({
         path: 'login'
       })
-    }else{
+    } else {
       next()
     }
-  }else{
+  } else {
     next()
   }
 })
