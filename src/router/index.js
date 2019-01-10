@@ -1,15 +1,29 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/login.vue'
-import Home from '@/components/home.vue'
-import User from '@/components/users.vue'
-import Rights from '@/components/rights.vue'
-import Roles from '@/components/roles.vue'
 import { Message } from 'element-ui'
-import Goods from '@/components/goods.vue'
-import Goodsadd from '@/components/goodsadd.vue'
-import Params from '@/components/params.vue'
-import Categories from '@/components/categories.vue'
+
+const Login = () => 
+      import ('@/components/login.vue')
+const Home = () => 
+      import ('@/components/home.vue')
+const User = () => 
+      import ('@/components/users.vue')
+const Rights = () => 
+      import ('@/components/rights.vue')
+const Roles = () => 
+      import ('@/components/roles.vue')
+const Goods = () => 
+      import ('@/components/goods.vue')
+const Goodsadd = () => 
+      import ('@/components/goodsadd.vue')
+const Params = () => 
+      import ('@/components/params.vue')
+const Categories = () => 
+      import ('@/components/categories.vue')
+const Order = () => 
+      import ('@/components/orders.vue')
+const Reports = () => 
+      import ('@/components/reports.vue')
 
 Vue.use(Router)
 
@@ -39,12 +53,17 @@ const router = new Router({
     }, {
       path: '/categories',
       component: Categories
+    }, {
+      path: '/orders',
+      component: Order
+    }, {
+      path: '/reports',
+      component: Reports
     }]
   }, {
     path: '/login',
     component: Login
-  }
-  ]
+  }]
 })
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login') {

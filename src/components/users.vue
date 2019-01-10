@@ -8,6 +8,7 @@
   <el-button @click="showAdd" type="success">我要添加</el-button>
  </el-row>
  <el-table
+      v-loading="loads"
       :data="tableData"
       style="width: 100%">
       <el-table-column
@@ -145,6 +146,7 @@ export default {
       const res = await this.$http.get(`users?query=${this.query}&pagesize=${this.pagesize}&pagenum=${this.pagenum}`)
       const {data: {total, users}, meta: {status, msg}} = res.data
       if (status === 200) {
+        this.loads = false
         this.$message.success(msg)
         this.tableData = users
         this.total = total
@@ -248,7 +250,8 @@ export default {
       currRoleId: -1,
       roles: [],
       currUsername: '',
-      currUserId: ''
+      currUserId: '',
+      loads: true
     }
   }
 }
