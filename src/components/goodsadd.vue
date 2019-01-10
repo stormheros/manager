@@ -92,8 +92,7 @@ export default {
             static:[],
             headers:{
                 Authorization : localStorage.getItem('token')
-            },
-            production:''
+            }
         }
     },
     components: {

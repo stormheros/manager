@@ -8,6 +8,9 @@ import Roles from '@/components/roles.vue'
 import { Message } from 'element-ui'
 import Goods from '@/components/goods.vue'
 import Goodsadd from '@/components/goodsadd.vue'
+import Params from '@/components/params.vue'
+import Categories from '@/components/categories.vue'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -30,7 +33,13 @@ const router = new Router({
     }, {
       path: '/goodsadd',
       component: Goodsadd
-    } ]
+    }, {
+      path: '/params',
+      component: Params
+    }, {
+      path: '/categories',
+      component: Categories
+    }]
   }, {
     path: '/login',
     component: Login
